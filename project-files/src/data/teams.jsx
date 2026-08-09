@@ -226,16 +226,18 @@ export const teams = {
     associates: {
       Technical: [
         { name: "Aarya Gosavi" },
-        { name: (
-            <a 
-              href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+        {
+          name: (
+            <a
+              href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+              target="_blank"
+              rel="noopener noreferrer"
               className="cursor-default text-inherit no-underline outline-none hover:text-inherit"
             >
               Affan Niyazi
             </a>
-          )  },
+          )
+        },
         { name: "Bhavya Lakhani" },
         { name: "Janhavi Shintre" },
         { name: "Manan Gohil" },
@@ -374,5 +376,5 @@ export const teams = {
     },
   },
 
- 
+
 };

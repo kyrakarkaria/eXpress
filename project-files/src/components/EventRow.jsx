@@ -79,11 +79,10 @@ export default function EventRow({ event, index, reversed }) {
 
   return (
     <div
-      className={`relative grid items-center gap-[150px] max-[860px]:grid-cols-1 max-[860px]:gap-[26px] ${
-        reversed
-          ? "grid-cols-[minmax(0,1fr)_minmax(0,460px)]"
-          : "grid-cols-[minmax(0,460px)_minmax(0,1fr)]"
-      }`}
+      className={`relative grid items-center gap-[150px] max-[860px]:grid-cols-1 max-[860px]:gap-[26px] max-[860px]:mb-[80px] last:mb-0 ${reversed
+        ? "grid-cols-[minmax(0,1fr)_minmax(0,460px)]"
+        : "grid-cols-[minmax(0,460px)_minmax(0,1fr)]"
+        }`}
       ref={rootRef}
       id={event.id}
     >
@@ -144,9 +143,8 @@ export default function EventRow({ event, index, reversed }) {
                     <button
                       key={i}
                       onClick={() => setSlide(i)}
-                      className={`w-2 h-2 rounded-full ${
-                        i === slide ? "bg-white" : "bg-white/40"
-                      }`}
+                      className={`w-2 h-2 rounded-full ${i === slide ? "bg-white" : "bg-white/40"
+                        }`}
                       aria-label={`Go to image ${i + 1}`}
                     />
                   ))}
@@ -156,11 +154,10 @@ export default function EventRow({ event, index, reversed }) {
           </div>
         </div>
         <span
-          className={`absolute -top-3.5 w-[46px] h-[46px] rounded-full bg-bg border border-border-soft flex items-center justify-center font-display font-bold text-[0.85rem] text-purple-light z-[2] ${
-            reversed
-              ? "-right-3.5 left-auto max-[860px]:-left-2.5 max-[860px]:right-auto"
-              : "-left-3.5"
-          }`}
+          className={`absolute -top-3.5 w-[46px] h-[46px] rounded-full bg-bg border border-border-soft flex items-center justify-center font-display font-bold text-[0.85rem] text-purple-light z-[2] ${reversed
+            ? "-right-3.5 left-auto max-[860px]:-left-2.5 max-[860px]:right-auto"
+            : "-left-3.5"
+            }`}
           ref={numberRef}
         >
           {event.number}

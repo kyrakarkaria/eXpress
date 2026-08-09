@@ -20,9 +20,8 @@ function Reveal({ children, className = "", delay = 0 }) {
     <div
       ref={ref}
       style={{ transitionDelay: visible ? `${delay}ms` : "0ms" }}
-      className={`transition-all duration-700 ease-out ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-      } ${className}`}
+      className={`transition-all duration-700 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+        } ${className}`}
     >
       {children}
     </div>
@@ -38,10 +37,10 @@ const KineticSphere = () => {
     "Confidence", "Expression", "Dialogue", "Leadership", "Ideas",
     "Rebuttal", "Oratory", "Diplomacy", "Articulation"
   ], []);
-  
-  const radius = 240; 
+
+  const radius = 240;
   const [isGrabbing, setIsGrabbing] = useState(false);
-  
+
   // Refs to handle physics OUTSIDE of React's render cycle for max performance
   const wordsRef = useRef([]);
   const rotationRef = useRef({ x: 0, y: 0 });
@@ -64,12 +63,12 @@ const KineticSphere = () => {
   // Continuous physics loop applied directly to DOM
   useEffect(() => {
     let animationFrameId;
-    
+
     const animate = () => {
       if (!isDraggingRef.current) {
         // Slow auto-rotation
         rotationRef.current.x += 0.0015;
-        rotationRef.current.y -= 0.0015; 
+        rotationRef.current.y -= 0.0015;
       }
 
       const cosX = Math.cos(rotationRef.current.x);
@@ -84,16 +83,16 @@ const KineticSphere = () => {
         // Apply 3D Rotation Matrices
         const y1 = pt.y * cosX - pt.z * sinX;
         const z1 = pt.y * sinX + pt.z * cosX;
-        
+
         const x2 = pt.x * cosY + z1 * sinY;
         const z2 = -pt.x * sinY + z1 * cosY;
 
         // Calculate 2.5D Depth
-        const alpha = (z2 + radius) / (2 * radius); 
-        
+        const alpha = (z2 + radius) / (2 * radius);
+
         // Dynamic scaling: deeper depth of field so back words shrink more, reducing clutter
-        const scale = 0.4 + alpha * 0.7; 
-        const opacity = 0.1 + alpha * 0.9; 
+        const scale = 0.4 + alpha * 0.7;
+        const opacity = 0.1 + alpha * 0.9;
 
         // Apply directly to DOM node
         el.style.transform = `translate(-50%, -50%) translate(${x2}px, ${y1}px) scale(${scale})`;
@@ -105,7 +104,7 @@ const KineticSphere = () => {
 
       animationFrameId = requestAnimationFrame(animate);
     };
-    
+
     animate();
     return () => cancelAnimationFrame(animationFrameId);
   }, [basePoints, radius]);
@@ -120,17 +119,17 @@ const KineticSphere = () => {
 
   const handlePointerMove = (e) => {
     if (!isDraggingRef.current) return;
-    
+
     const deltaX = e.clientX - prevMouseRef.current.x;
     const deltaY = e.clientY - prevMouseRef.current.y;
-    
+
     // THE FIX: Restored the proper 1:1 mapping. 
     // Drag down (positive Y) subtracts X. Drag right (positive X) adds Y.
     rotationRef.current = {
       x: rotationRef.current.x - deltaY * 0.004,
       y: rotationRef.current.y + deltaX * 0.004,
     };
-    
+
     prevMouseRef.current = { x: e.clientX, y: e.clientY };
   };
 
@@ -142,26 +141,25 @@ const KineticSphere = () => {
 
   return (
     <div className="relative w-full h-full flex items-center justify-center">
-      <div 
-        className={`relative w-full h-full max-w-[550px] max-h-[550px] rounded-full flex items-center justify-center ${
-          isGrabbing ? 'cursor-grabbing' : 'cursor-grab'
-        }`} 
+      <div
+        className={`relative w-full h-full max-w-[550px] max-h-[550px] rounded-full flex items-center justify-center ${isGrabbing ? 'cursor-grabbing' : 'cursor-grab'
+          }`}
         style={{ touchAction: 'none' }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
       >
-         {words.map((word, i) => (
-           <div
-             key={i}
-             ref={(el) => (wordsRef.current[i] = el)}
-             className="absolute top-1/2 left-1/2 font-serif-brew font-semibold transition-colors duration-300 pointer-events-none whitespace-nowrap tracking-wide"
-             style={{ fontSize: '1.5rem' }}
-           >
-             {word}
-           </div>
-         ))}
+        {words.map((word, i) => (
+          <div
+            key={i}
+            ref={(el) => (wordsRef.current[i] = el)}
+            className="absolute top-1/2 left-1/2 font-serif-brew font-semibold transition-colors duration-300 pointer-events-none whitespace-nowrap tracking-wide"
+            style={{ fontSize: '1.5rem' }}
+          >
+            {word}
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -170,14 +168,14 @@ const KineticSphere = () => {
 export default function About() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const containerRef = useRef(null);
-  
+
   const [spotlightPos, setSpotlightPos] = useState({ x: 50, y: 50 });
 
   const slides = [
     {
       tag: "What Are We?",
       title: "DJSCE eXpress",
-      text: "The official public speaking committee of DJ Sanghvi College of Engineering where we organize public speaking and debating events. We have organised many successful events in the past like Illuminare and our flagship event, Aryavarta, which have been received with a lot of support and appreciation."
+      text: "The official public speaking committee of DJ Sanghvi College of Engineering where we organize public speaking and debating events. We have organised many successful events in the past like Veritas and our flagship event, Aryavarta, which have been received with a lot of support and appreciation."
     },
     {
       tag: "Our Community & Mission",
@@ -211,7 +209,7 @@ export default function About() {
       });
     }, {
       root: containerRef.current,
-      threshold: 0.5 
+      threshold: 0.5
     });
 
     const tracks = document.querySelectorAll('.track-slide');
@@ -227,7 +225,7 @@ export default function About() {
   };
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="bg-black font-sans text-violet-50 select-none h-screen w-full overflow-y-scroll overflow-x-hidden snap-y snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
       onMouseMove={handleMouseMove}
@@ -248,19 +246,19 @@ export default function About() {
         @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         .marquee-track { animation: marquee 26s linear infinite; }
       `}</style>
-      
+
       {/* SECTION 1: THE STICKY ARENA */}
       <div className="relative w-full h-[300vh]">
-        
+
         <div className="sticky top-0 left-0 w-full h-screen flex flex-col md:flex-row items-center justify-between overflow-hidden px-6 md:px-12 z-10 border-b border-violet-500/20">
-          
-          <div 
+
+          <div
             className="absolute inset-0 opacity-40 transition-all duration-300 pointer-events-none"
             style={{
               background: `radial-gradient(circle 450px at ${spotlightPos.x}% ${spotlightPos.y}%, rgba(139,92,246,0.15) 0%, transparent 100%)`
             }}
           />
-          
+
           {/* THE KINETIC TYPOGRAPHY SPHERE (Hidden on Mobile) */}
           <div className="hidden md:flex absolute inset-0 md:relative md:inset-auto w-full md:w-1/2 h-full z-20 items-center justify-center overflow-visible">
             <KineticSphere />
@@ -274,11 +272,10 @@ export default function About() {
                 return (
                   <div
                     key={index}
-                    className={`absolute inset-0 flex flex-col justify-center text-center md:text-left transition-all duration-700 ease-out ${
-                      isCurrent 
-                        ? 'opacity-100 translate-y-0 scale-100' 
-                        : 'opacity-0 translate-y-12 scale-95'
-                    }`}
+                    className={`absolute inset-0 flex flex-col justify-center text-center md:text-left transition-all duration-700 ease-out ${isCurrent
+                      ? 'opacity-100 translate-y-0 scale-100'
+                      : 'opacity-0 translate-y-12 scale-95'
+                      }`}
                   >
                     <div className="mb-5 flex items-center justify-center md:justify-start gap-2.5 font-mono text-xs uppercase tracking-[0.18em] text-fuchsia-300">
                       <span className="h-px w-6 bg-fuchsia-300" />
@@ -301,11 +298,10 @@ export default function About() {
             {slides.map((_, index) => (
               <div
                 key={index}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  currentSlide === index 
-                    ? 'bg-fuchsia-300 h-8 shadow-[0_0_10px_#d946ef]' 
-                    : 'bg-violet-900/50'
-                }`}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${currentSlide === index
+                  ? 'bg-fuchsia-300 h-8 shadow-[0_0_10px_#d946ef]'
+                  : 'bg-violet-900/50'
+                  }`}
               />
             ))}
           </div>
@@ -315,10 +311,10 @@ export default function About() {
         {/* INVISIBLE MAGNETIC SNAP TRACKS */}
         <div className="absolute top-0 left-0 w-full h-full flex flex-col pointer-events-none z-0">
           {slides.map((_, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               data-index={index}
-              className="track-slide w-full h-screen snap-center snap-always" 
+              className="track-slide w-full h-screen snap-center snap-always"
             />
           ))}
         </div>
@@ -327,7 +323,7 @@ export default function About() {
 
       {/* SECTION 2: TICKER & CORE OBJECTIVES */}
       <section className="snap-start min-h-screen bg-black relative z-30 flex flex-col overflow-hidden">
-        
+
         <div
           className="orb pointer-events-none absolute left-[-10%] top-20 h-72 w-72 rounded-full opacity-20"
           style={{ background: "radial-gradient(circle, #7c3aed 0%, transparent 70%)" }}
@@ -345,9 +341,9 @@ export default function About() {
                 <span key={i} className="font-mono text-xs tracking-wide text-violet-300/50">
                   <span className="px-7">Public Speaking & Debating</span>
                   <span className="px-7">•</span>
-                  <span className="px-7"><b className="font-semibold text-fuchsia-300">Aryavarta</b> & <b className="font-semibold text-fuchsia-300">Illuminare</b></span>
+                  <span className="px-7">New events coming soon!</span>
                   <span className="px-7">•</span>
-                  <span className="px-7">DJSCE's Official Committee</span>
+                  <span className="px-7">DJSCE's Official Public Speaking Committee</span>
                   <span className="px-7">•</span>
                   <span className="px-7">Building future leaders</span>
                   <span className="px-7">•</span>
@@ -368,15 +364,15 @@ export default function About() {
             {pillars.map((pillar, index) => (
               <Reveal key={index} delay={index * 100}>
                 <div className="group relative block h-full rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-950/50 to-black p-8 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:border-violet-400 hover:shadow-2xl hover:shadow-violet-500/20">
-                  
+
                   <div className="mb-6 flex h-11 w-11 items-center justify-center rounded-xl border border-violet-500/25 bg-violet-500/10 group-hover:bg-violet-500/20 transition-colors">
                     <span className="font-mono text-sm font-bold text-fuchsia-300">{index + 1}</span>
                   </div>
-                  
+
                   <h3 className="font-serif-brew text-xl font-semibold text-violet-50 mb-3">
                     {pillar.title}
                   </h3>
-                  
+
                   <p className="text-sm leading-relaxed text-violet-200/80">
                     {pillar.desc}
                   </p>

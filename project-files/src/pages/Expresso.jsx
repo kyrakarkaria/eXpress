@@ -35,7 +35,7 @@ const magazineArchive = [
     id: 'may-2026',
     title: 'eXpresso May 2026',
     month: 'May 2026',
-    folderName: 'may', 
+    folderName: 'may',
     description: "Fresh insights, current affairs highlights, campus events, and stories from our May 2026 collection.",
     tag: 'Archived',
     available: true,
@@ -113,7 +113,7 @@ function RealReactFlipBook({ folderName, totalPages, pagePrefix }) {
     const handleResize = () => {
       const width = window.innerWidth;
       if (width < 640) {
-        setBookDimensions({ width: 320, height: 480 }); 
+        setBookDimensions({ width: 320, height: 480 });
       } else if (width < 1024) {
         setBookDimensions({ width: 380, height: 560 });
       } else {
@@ -140,7 +140,7 @@ function RealReactFlipBook({ folderName, totalPages, pagePrefix }) {
       const img = new Image();
       img.src = page.imgUrl;
       if ('decode' in img) {
-        img.decode().catch(() => {});
+        img.decode().catch(() => { });
       }
       return img;
     });
@@ -185,8 +185,8 @@ function RealReactFlipBook({ folderName, totalPages, pagePrefix }) {
         {pages.map((page, index) => {
           const isCover = index === 0 || index === pages.length - 1;
           return (
-            <div 
-              key={page.pageNum} 
+            <div
+              key={page.pageNum}
               className="relative w-full h-full bg-[#160b24] select-none overflow-hidden"
               data-density={isCover ? "hard" : "soft"}
               style={{
@@ -196,8 +196,8 @@ function RealReactFlipBook({ folderName, totalPages, pagePrefix }) {
                 WebkitBackfaceVisibility: 'hidden'
               }}
             >
-              <img 
-                src={page.imgUrl} 
+              <img
+                src={page.imgUrl}
                 alt={`Page ${page.pageNum}`}
                 className="w-full h-full object-contain pointer-events-none"
                 loading="eager"
@@ -208,7 +208,7 @@ function RealReactFlipBook({ folderName, totalPages, pagePrefix }) {
                   if (placeholder) placeholder.style.display = 'flex';
                 }}
               />
-              <div 
+              <div
                 className="absolute inset-0 hidden flex-col items-center justify-center text-center p-6 bg-[#1f1235] border-2 border-purple-500/20"
                 style={{ display: 'none' }}
               >
@@ -285,8 +285,8 @@ export default function Expresso() {
   }, []);
 
   useEffect(() => {
-    if (selectedMag) return; 
-    
+    if (selectedMag) return;
+
     const cards = document.querySelectorAll('.reveal-card');
     const observer = new IntersectionObserver(
       (entries) => {
@@ -314,7 +314,7 @@ export default function Expresso() {
             </span>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-wide text-white">{selectedMag.title}</h1>
           </div>
-          <button 
+          <button
             onClick={handleBackToArchive}
             style={customElementStyle}
             className="w-full sm:w-auto border border-purple-900/60 rounded-2xl bg-[#0c0618] hover:bg-purple-900/60 hover:border-purple-500/80 hover:scale-105 active:scale-95 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] font-semibold transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer"
@@ -325,8 +325,8 @@ export default function Expresso() {
 
         <div className="w-full max-w-5xl bg-black rounded-2xl overflow-hidden border border-purple-500/10 shadow-2xl p-2 sm:p-4 flex items-center justify-center min-h-[500px]">
           {selectedMag.available ? (
-            <RealReactFlipBook 
-              folderName={selectedMag.folderName} 
+            <RealReactFlipBook
+              folderName={selectedMag.folderName}
               totalPages={selectedMag.pagesCount || 8}
               pagePrefix={selectedMag.pagePrefix}
             />
@@ -351,15 +351,15 @@ export default function Expresso() {
         <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           <div className="space-y-6 text-center lg:text-left">
             <div className="space-y-4">
-              <div 
+              <div
                 className="inline-flex items-center gap-2 text-xs tracking-widest uppercase mb-1"
                 style={{ color: '#F0ABFC' }}
               >
                 <span className="w-4 h-[1px] inline-block" style={{ backgroundColor: '#F0ABFC' }}></span>
                 The Literary Club Publication
               </div>
-              
-              <h1 
+
+              <h1
                 className="text-5xl font-bold leading-[1.1] tracking-tight text-white sm:text-6xl lg:text-7xl"
                 style={{ fontFamily: "'Fraunces', serif" }}
               >
@@ -368,10 +368,10 @@ export default function Expresso() {
               </h1>
 
               <p className="mx-auto lg:mx-0 max-w-2xl text-base sm:text-lg leading-relaxed text-slate-300 font-light">
-                Our literary magazine featuring articles, stories, poems, and insights about public speaking, debating, and communication skills.
+                Our newsletters featuring articles, stories, poems, and insights about public speaking, debating, and communication skills.
               </p>
             </div>
-            
+
             <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
               <a
                 href="#journals"
@@ -381,7 +381,7 @@ export default function Expresso() {
                 }}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 font-bold transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-[0_0_25px_rgba(192,132,252,0.6)] shadow-lg"
               >
-                Explore journals
+                Explore Newsletters
               </a>
             </div>
           </div>
@@ -391,14 +391,14 @@ export default function Expresso() {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-purple-400">Committee spirit</p>
-                  <h2 
+                  <h2
                     className="mt-1 text-2xl font-bold text-white"
                     style={{ fontFamily: "'Fraunces', serif" }}
                   >
                     The art of expression
                   </h2>
                 </div>
-                <div 
+                <div
                   style={customElementStyle}
                   className="shrink-0 rounded-2xl border border-purple-900/60 bg-[#0c0618] font-semibold transition-all duration-300 hover:border-purple-500/50"
                 >
@@ -452,13 +452,12 @@ export default function Expresso() {
                 }}
               >
                 <div>
-                  <div 
+                  <div
                     onClick={() => journal.available && handleSelectMagazine(journal)}
-                    className={`mb-4 aspect-[4/3] rounded-xl border border-white/10 bg-[#160b24] overflow-hidden relative group transition-all duration-300 ${
-                      journal.available ? 'cursor-pointer hover:border-purple-500/50' : 'cursor-not-allowed'
-                    }`}
+                    className={`mb-4 aspect-[4/3] rounded-xl border border-white/10 bg-[#160b24] overflow-hidden relative group transition-all duration-300 ${journal.available ? 'cursor-pointer hover:border-purple-500/50' : 'cursor-not-allowed'
+                      }`}
                   >
-                    <img 
+                    <img
                       src={`/expressoPages/${journal.folderName}/${getPagePrefix(journal)}-0001.jpg`}
                       alt={`${journal.title} preview cover`}
                       className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-[1.05] transition-all duration-500"
@@ -480,7 +479,7 @@ export default function Expresso() {
                         <p className="mt-1 text-xs text-slate-400 leading-relaxed font-light line-clamp-2">{journal.description}</p>
                       </div>
                     </div>
-                    <div 
+                    <div
                       style={customElementStyle}
                       className="shrink-0 rounded-2xl border border-purple-900/60 bg-[#0c0618] font-semibold"
                     >
@@ -497,11 +496,10 @@ export default function Expresso() {
                       ...customElementStyle,
                       color: journal.available ? '#020617' : '#52525b'
                     }}
-                    className={`w-full rounded-2xl font-bold inline-flex items-center justify-center gap-2 transition-all duration-300 ${
-                      journal.available 
-                        ? 'bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 hover:scale-[1.02] active:scale-[0.98] hover:shadow-[0_0_25px_rgba(192,132,252,0.5)] cursor-pointer shadow-md' 
-                        : 'border border-white/5 bg-zinc-900/50 cursor-not-allowed'
-                    }`}
+                    className={`w-full rounded-2xl font-bold inline-flex items-center justify-center gap-2 transition-all duration-300 ${journal.available
+                      ? 'bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 hover:scale-[1.02] active:scale-[0.98] hover:shadow-[0_0_25px_rgba(192,132,252,0.5)] cursor-pointer shadow-md'
+                      : 'border border-white/5 bg-zinc-900/50 cursor-not-allowed'
+                      }`}
                   >
                     {journal.available ? (
                       <>Read 3D Issue</>
