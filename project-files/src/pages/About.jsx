@@ -32,7 +32,7 @@ function Reveal({ children, className = "", delay = 0 }) {
 const KineticSphere = () => {
   const words = useMemo(() => [
     "DJSCE eXpress", "Public Speaking", "Debate", "Illuminare", "Aryavarta",
-    "Model UN", "Discourse", "Rhetoric", "Elocution", "Logic",
+    "eXpl", "Discourse", "Rhetoric", "Elocution", "Logic",
     "Narrative", "Persuasion", "Voice", "Impact", "Clarity",
     "Confidence", "Expression", "Dialogue", "Leadership", "Ideas",
     "Rebuttal", "Oratory", "Diplomacy", "Articulation"
@@ -183,9 +183,9 @@ export default function About() {
       text: "At DJSCE eXpress, we strive to unlock the potential of every student, ranging from public speaking skills to critical thinking to confident self-expression. We organize debates and discussions related to real-world problems and work on finding solutions collectively."
     },
     {
-      tag: "Why Choose Us?",
-      title: "Unmatched Reach",
-      text: "With the largest audiences and highest participant registrations in the city, we have built a reputation for exceptional publicity and unique event concepts. Our committee consists of the brightest minds, ensuring a platform where only the most thought-provoking discussions thrive."
+      tag: "Our Standard",
+      title: "Elevated Discourse",
+      text: "We believe in the power of profound, high-quality dialogue. Rather than focusing on sheer numbers, our events are meticulously curated to foster deep intellectual engagement, rigorous debate, and thought-provoking discussions that leave a lasting impact."
     }
   ];
 
