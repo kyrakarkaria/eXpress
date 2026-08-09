@@ -67,7 +67,7 @@ export default function FolderArchive({
         />
       </div>
 
-      {/* Folder Tabs */}
+      {/* Folder Tabs — UNCHANGED */}
       <style>
         {`
           .hide-scrollbar::-webkit-scrollbar {
@@ -76,6 +76,7 @@ export default function FolderArchive({
         `}
       </style>
 
+     
       <div
         className="
           hide-scrollbar
@@ -83,6 +84,7 @@ export default function FolderArchive({
           w-full
           px-2
           sm:px-5
+          pt-3
           overflow-x-auto
           relative
           z-20
@@ -90,11 +92,28 @@ export default function FolderArchive({
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
+          overflowY: "visible",
         }}
       >
         <div className="flex w-full min-w-max sm:min-w-0">
           {years.map((year, i) => {
             const isActive = selectedYear === year;
+            const isFirst = i === 0;
+            const isLast = i === years.length - 1;
+
+            // KEY FIX #2: only round the OUTER corners of the whole tab
+            // inner edge stays square so adjoining tabs butt together
+            // with no rounded notch peeking through between them.
+            // The active tab is elevated/scaled above its neighbors, so
+            // it keeps full rounding on both top corners regardless of
+            // position.
+            const cornerClasses = isActive
+              ? "rounded-t-[18px] sm:rounded-t-[22px] md:rounded-t-[26px]"
+              : `
+                  ${isFirst ? "rounded-tl-[18px] sm:rounded-tl-[22px] md:rounded-tl-[26px]" : "rounded-tl-none"}
+                  ${isLast ? "rounded-tr-[18px] sm:rounded-tr-[22px] md:rounded-tr-[26px]" : "rounded-tr-none"}
+                `;
+
             return (
               <button
                 key={year}
@@ -113,9 +132,7 @@ export default function FolderArchive({
                   h-12
                   sm:h-14
                   md:h-16
-                  rounded-t-[18px]
-                  sm:rounded-t-[22px]
-                  md:rounded-t-[26px]
+                  ${cornerClasses}
                   px-2
                   sm:px-4
                   text-xs
@@ -134,19 +151,25 @@ export default function FolderArchive({
                         to-fuchsia-500
                         text-white
                         scale-[1.05]
-                        translate-y-[2px]
                         shadow-[0_10px_35px_rgba(124,58,237,0.45)]
                         border
                         border-violet-300/30
-                        -mb-[2px]
                       `
                       : `
-                        bg-[#241738]
+                        bg-gradient-to-br
+                        from-violet-500/10
+                        via-fuchsia-500/5
+                        to-violet-900/10
+                        backdrop-blur-2xl
+                        backdrop-saturate-150
+                        border-t
+                        border-x
+                        border-white/10
                         text-gray-300
                         opacity-80
-                        border
-                        border-violet-500/20
-                        hover:bg-[#39265A]
+                        hover:from-violet-500/20
+                        hover:via-fuchsia-500/10
+                        hover:to-violet-900/20
                         hover:text-white
                         hover:-translate-y-[2px]
                         hover:opacity-100
@@ -162,24 +185,27 @@ export default function FolderArchive({
         </div>
       </div>
 
-      {/* Folder */}
+      {/*
+        Folder body — now glassmorphism.
+      */}
       <div
         className="
-          -mt-1
+          mt-0
           rounded-b-[24px]
           sm:rounded-b-[34px]
           rounded-tr-[24px]
           sm:rounded-tr-[34px]
           rounded-tl-none
           bg-gradient-to-br
-          from-[#1B1132]
-          via-[#23153E]
-          to-[#140B28]
-          backdrop-blur-xl
+          from-violet-500/10
+          via-fuchsia-500/5
+          to-violet-900/10
+          backdrop-blur-2xl
+          backdrop-saturate-150
           border
-          border-violet-500/25
-          shadow-[0_15px_40px_rgba(0,0,0,.45)]
-          sm:shadow-[0_30px_80px_rgba(0,0,0,.45)]
+          border-white/10
+          shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_15px_40px_rgba(0,0,0,.45)]
+          sm:shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_30px_80px_rgba(0,0,0,.45)]
           min-h-[500px]
           sm:min-h-[600px]
           md:min-h-[750px]

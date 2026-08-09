@@ -70,6 +70,7 @@ export default function DepartmentGrid({ departments, placeholderImage,namesOnly
             >
               <h3
                 className="
+                  font-mono
                   text-2xl
                   font-bold
                   text-center
@@ -104,6 +105,7 @@ export default function DepartmentGrid({ departments, placeholderImage,namesOnly
     <p
   key={member.id ?? `${dept}-${member.name}-${i}`}
   className="
+    font-serif
     text-lg
     text-white
     text-center

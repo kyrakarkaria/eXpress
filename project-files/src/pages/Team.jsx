@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { teams } from "../data/teams.jsx";
+import { teams, leadership } from "../data/teams";
 import FolderArchive from "../components/FolderArchive";
 import FacultyCard from "../components/FacultyCard";
 import DepartmentGrid from "../components/DepartmentGrid";
@@ -7,7 +7,7 @@ import DepartmentGrid from "../components/DepartmentGrid";
 export default function Team() {
   const placeholderImage = "https://placehold.co/300x300?text=Placeholder";
 
-  const [selectedYear, setSelectedYear] = useState("2025-2026");
+  const [selectedYear, setSelectedYear] = useState("2026-2027");
   const [activeTab, setActiveTab] = useState("core");
 
   const currentYear = teams[selectedYear];
@@ -24,10 +24,7 @@ export default function Team() {
     <div
       className="
       
-      bg-linear-to-br
-        from-black
-        via-[#180028]
-        to-[#070707]
+      bg-black
         text-white
         px-4
 sm:px-6
@@ -52,32 +49,47 @@ py-6
           overflow-hidden
         "
       >
-        <div
-          className="
-            absolute
-            w-[500px]
-            h-[500px]
-            rounded-full
-            bg-violet-600/20
-            blur-[140px]
-            -z-10
-          "
-        />
+        {/* Starfield */}
+        <div className="absolute inset-0 -z-20 pointer-events-none">
+          {[
+            [4, 8], [9, 22], [14, 5], [18, 34], [22, 15], [27, 40],
+            [31, 9], [36, 28], [41, 18], [46, 6], [52, 33], [58, 12],
+            [63, 24], [67, 45], [72, 8], [77, 30], [81, 17], [86, 38],
+            [91, 10], [95, 26], [12, 48], [23, 55], [35, 50], [48, 58],
+            [61, 52], [74, 56], [88, 48], [6, 32], [55, 20], [70, 15],
+          ].map(([left, top], i) => (
+            <span
+              key={i}
+              className="absolute rounded-full bg-white"
+              style={{
+                left: `${left}%`,
+                top: `${top}%`,
+                width: i % 3 === 0 ? "3px" : "2px",
+                height: i % 3 === 0 ? "3px" : "2px",
+                opacity: 0.3 + (i % 5) * 0.12,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Eyebrow */}
+        <div className="flex items-center gap-3 mb-4">
+          <span className="text-xs md:text-sm tracking-[4px] uppercase tracking-[0.18em] text-fuchsia-300 font-mono">
+            — MEET THE TEAM —
+          </span>
+        </div>
+
         <h1
           className="
+            font-serif
             text-5xl
 md:text-7xl
-            font-extrabold
             tracking-wide
-            bg-gradient-to-r
-            from-white
-            via-violet-200
-            to-purple-400
-            bg-clip-text
-            text-transparent
+            text-white
           "
         >
-          OUR TEAM
+          <span className="font-bold">Our</span>{" "}
+          <span className="italic font-normal text-fuchsia-200">Team</span>
         </h1>
         <p
           className="
@@ -96,7 +108,7 @@ md:text-7xl
         
         <div
           className="
-            mt-10
+            mt-15
             flex
             flex-col
             items-center
@@ -109,8 +121,8 @@ md:text-7xl
       </section>
 
       {/* FACULTY  & PRINCIPAL*/}
-      <div className=" mb-12 w-full">
-        <h2 className="text-4xl font-bold text-center"> Principal </h2>
+      <div className="  mt-20 mb-12 w-full">
+        <h2 className="font-serif text-4xl font-bold text-center"> Principal </h2>
         <div
           className="
             w-72
@@ -126,10 +138,10 @@ md:text-7xl
           "
         />
          <div className="flex flex-wrap justify-center gap-12">
-         <FacultyCard {...currentYear.leadership.principal} />
+         <FacultyCard {...leadership.principal} />
         </div>
         
-        <h2 className=" mt-10 text-4xl font-bold text-center">Faculty</h2>
+        <h2 className="font-serif mt-10 text-4xl font-bold text-center">Faculty</h2>
 
         <div
           className="
@@ -148,7 +160,7 @@ md:text-7xl
 
         <div className="flex flex-wrap justify-center gap-12">
          
-          <FacultyCard {...currentYear.leadership.faculty} />
+          <FacultyCard {...leadership.faculty} />
         </div>
       </div>
 
@@ -294,10 +306,10 @@ lg:h-[480px]
                 "
               />
               <div className="absolute bottom-8 left-8">
-                <p className="uppercase tracking-[3px] text-sm text-gray-200">
+                <p className="font-mono uppercase tracking-[0.15em] text-sm text-violet-300">
                   Year
                 </p>
-                <h2 className="text-5xl font-bold">{selectedYear}</h2>
+                <h2 className="font-serif text-5xl font-bold">{selectedYear}</h2>
               </div>
             </div>
           </div>

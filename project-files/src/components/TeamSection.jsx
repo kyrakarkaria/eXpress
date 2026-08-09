@@ -9,6 +9,7 @@ import MemberCard from "./MemberCard";
 
       <h2
         className="
+          font-serif
           text-4xl
           font-bold
           tracking-wide

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 
 // --- Reusable Reveal Animation (from Theme) ---
 function Reveal({ children, className = "", delay = 0 }) {
@@ -29,17 +29,149 @@ function Reveal({ children, className = "", delay = 0 }) {
   );
 }
 
+// --- Kinetic Typography Sphere Engine (Optimized 2.5D) ---
+const KineticSphere = () => {
+  const words = useMemo(() => [
+    "DJSCE eXpress", "Public Speaking", "Debate", "Illuminare", "Aryavarta",
+    "Model UN", "Discourse", "Rhetoric", "Elocution", "Logic",
+    "Narrative", "Persuasion", "Voice", "Impact", "Clarity",
+    "Confidence", "Expression", "Dialogue", "Leadership", "Ideas",
+    "Rebuttal", "Oratory", "Diplomacy", "Articulation"
+  ], []);
+  
+  const radius = 240; 
+  const [isGrabbing, setIsGrabbing] = useState(false);
+  
+  // Refs to handle physics OUTSIDE of React's render cycle for max performance
+  const wordsRef = useRef([]);
+  const rotationRef = useRef({ x: 0, y: 0 });
+  const isDraggingRef = useRef(false);
+  const prevMouseRef = useRef({ x: 0, y: 0 });
+
+  // Pre-calculate the base positions of the Fibonacci sphere
+  const basePoints = useMemo(() => {
+    return words.map((_, i) => {
+      const phi = Math.acos(-1 + (2 * i) / words.length);
+      const theta = Math.sqrt(words.length * Math.PI) * phi;
+      return {
+        x: radius * Math.cos(theta) * Math.sin(phi),
+        y: radius * Math.sin(theta) * Math.sin(phi),
+        z: radius * Math.cos(phi)
+      };
+    });
+  }, [words, radius]);
+
+  // Continuous physics loop applied directly to DOM
+  useEffect(() => {
+    let animationFrameId;
+    
+    const animate = () => {
+      if (!isDraggingRef.current) {
+        // Slow auto-rotation
+        rotationRef.current.x += 0.0015;
+        rotationRef.current.y -= 0.0015; 
+      }
+
+      const cosX = Math.cos(rotationRef.current.x);
+      const sinX = Math.sin(rotationRef.current.x);
+      const cosY = Math.cos(rotationRef.current.y);
+      const sinY = Math.sin(rotationRef.current.y);
+
+      wordsRef.current.forEach((el, i) => {
+        if (!el) return;
+        const pt = basePoints[i];
+
+        // Apply 3D Rotation Matrices
+        const y1 = pt.y * cosX - pt.z * sinX;
+        const z1 = pt.y * sinX + pt.z * cosX;
+        
+        const x2 = pt.x * cosY + z1 * sinY;
+        const z2 = -pt.x * sinY + z1 * cosY;
+
+        // Calculate 2.5D Depth
+        const alpha = (z2 + radius) / (2 * radius); 
+        
+        // Dynamic scaling: deeper depth of field so back words shrink more, reducing clutter
+        const scale = 0.4 + alpha * 0.7; 
+        const opacity = 0.1 + alpha * 0.9; 
+
+        // Apply directly to DOM node
+        el.style.transform = `translate(-50%, -50%) translate(${x2}px, ${y1}px) scale(${scale})`;
+        el.style.opacity = opacity;
+        el.style.zIndex = Math.round(z2 * 100);
+        el.style.color = alpha > 0.8 ? '#fdf4ff' : '#a78bfa';
+        el.style.textShadow = alpha > 0.85 ? '0 0 20px rgba(217,70,239,0.6)' : 'none';
+      });
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+    
+    animate();
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [basePoints, radius]);
+
+  // --- Drag Interactions ---
+  const handlePointerDown = (e) => {
+    isDraggingRef.current = true;
+    setIsGrabbing(true);
+    prevMouseRef.current = { x: e.clientX, y: e.clientY };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const handlePointerMove = (e) => {
+    if (!isDraggingRef.current) return;
+    
+    const deltaX = e.clientX - prevMouseRef.current.x;
+    const deltaY = e.clientY - prevMouseRef.current.y;
+    
+    // THE FIX: Restored the proper 1:1 mapping. 
+    // Drag down (positive Y) subtracts X. Drag right (positive X) adds Y.
+    rotationRef.current = {
+      x: rotationRef.current.x - deltaY * 0.004,
+      y: rotationRef.current.y + deltaX * 0.004,
+    };
+    
+    prevMouseRef.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handlePointerUp = (e) => {
+    isDraggingRef.current = false;
+    setIsGrabbing(false);
+    e.currentTarget.releasePointerCapture(e.pointerId);
+  };
+
+  return (
+    <div className="relative w-full h-full flex items-center justify-center">
+      <div 
+        className={`relative w-full h-full max-w-[550px] max-h-[550px] rounded-full flex items-center justify-center ${
+          isGrabbing ? 'cursor-grabbing' : 'cursor-grab'
+        }`} 
+        style={{ touchAction: 'none' }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+      >
+         {words.map((word, i) => (
+           <div
+             key={i}
+             ref={(el) => (wordsRef.current[i] = el)}
+             className="absolute top-1/2 left-1/2 font-serif-brew font-semibold transition-colors duration-300 pointer-events-none whitespace-nowrap tracking-wide"
+             style={{ fontSize: '1.5rem' }}
+           >
+             {word}
+           </div>
+         ))}
+      </div>
+    </div>
+  );
+};
+
 export default function About() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const containerRef = useRef(null);
-  const micContainerRef = useRef(null);
   
   const [spotlightPos, setSpotlightPos] = useState({ x: 50, y: 50 });
-
-  // Physics state exclusively for the microphone
-  const [isDragging, setIsDragging] = useState(false);
-  const [micPos, setMicPos] = useState({ x: 50, y: 40 }); 
-  const dragStart = useRef({ mouseX: 0, mouseY: 0, startMicX: 50, startMicY: 40 });
 
   const slides = [
     {
@@ -94,50 +226,10 @@ export default function About() {
     setSpotlightPos({ x, y });
   };
 
-  // --- INTERACTIVE ROPE PHYSICS LOGIC ---
-  const handlePointerDown = (e) => {
-    setIsDragging(true);
-    dragStart.current = { 
-      mouseX: e.clientX, 
-      mouseY: e.clientY,
-      startMicX: micPos.x,
-      startMicY: micPos.y
-    };
-    e.currentTarget.setPointerCapture(e.pointerId);
-  };
-
-  const handlePointerMove = (e) => {
-    if (!isDragging || !micContainerRef.current) return;
-    
-    const rect = micContainerRef.current.getBoundingClientRect();
-    const deltaX = ((e.clientX - dragStart.current.mouseX) / rect.width) * 100;
-    const deltaY = ((e.clientY - dragStart.current.mouseY) / rect.height) * 100;
-    
-    setMicPos({
-      x: Math.max(5, Math.min(95, dragStart.current.startMicX + deltaX)),
-      y: Math.max(5, Math.min(85, dragStart.current.startMicY + deltaY))
-    });
-  };
-
-  const handlePointerUp = (e) => {
-    setIsDragging(false);
-    setMicPos({ x: 50, y: 40 }); 
-    e.currentTarget.releasePointerCapture(e.pointerId);
-  };
-
-  const yDiff = micPos.y - 40; 
-  const xDiff = micPos.x - 50;
-  const isSlack = yDiff < 0; 
-  const sag = Math.abs(xDiff) * 0.15; 
-  const cpX = 50 + (xDiff * 0.3) + (isSlack ? (xDiff * 1.5) : 0);
-  const cpY = (micPos.y * 0.4) + sag + (isSlack ? Math.abs(yDiff) * 1.2 : 0);
-
-  const springTransition = isDragging ? 'none' : 'all 1.2s cubic-bezier(0.4, 2.8, 0.3, 0.8)';
-
   return (
     <div 
       ref={containerRef}
-      className="bg-black font-sans text-violet-50 select-none h-screen w-full overflow-y-scroll overflow-x-hidden snap-y snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+      className="bg-black font-sans text-violet-50 select-none h-screen w-full overflow-y-scroll overflow-x-hidden snap-y snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
       onMouseMove={handleMouseMove}
     >
       {/* THEME STYLES INJECTED */}
@@ -165,75 +257,13 @@ export default function About() {
           <div 
             className="absolute inset-0 opacity-40 transition-all duration-300 pointer-events-none"
             style={{
-              background: `radial-gradient(circle 350px at ${spotlightPos.x}% ${spotlightPos.y}%, rgba(139,92,246,0.15) 0%, transparent 100%)`
+              background: `radial-gradient(circle 450px at ${spotlightPos.x}% ${spotlightPos.y}%, rgba(139,92,246,0.15) 0%, transparent 100%)`
             }}
           />
           
-          {/* THE HANGING INTERACTIVE MICROPHONE (Hidden on mobile via hidden md:block) */}
-          <div 
-            ref={micContainerRef}
-            className="hidden md:block absolute inset-0 md:relative md:inset-auto w-full md:w-1/2 h-full z-20 overflow-visible"
-          >
-            
-            <svg 
-              viewBox="0 0 100 100" 
-              preserveAspectRatio="none" 
-              className="absolute top-0 left-0 w-full h-full pointer-events-none"
-            >
-              <path d="M 0 0 L 100 100" fill="none" stroke="none" />
-              <path 
-                d={`M 50 0 Q ${cpX} ${cpY} ${micPos.x} ${micPos.y}`}
-                stroke="#52525b" 
-                strokeWidth="16" 
-                vectorEffect="non-scaling-stroke" 
-                fill="none" 
-                strokeLinecap="round"
-                style={{ transition: springTransition }}
-              />
-            </svg>
-
-            {/* Draggable Steely Chrome Mic Capsule */}
-            <div 
-              className={`absolute flex flex-col items-center pointer-events-auto group ${
-                isDragging ? 'cursor-grabbing' : 'cursor-grab'
-              }`}
-              style={{
-                left: `${micPos.x}%`,
-                top: `${micPos.y}%`,
-                transform: `translate(-50%, -2px) rotate(${(micPos.x - 50) * 0.8}deg)`,
-                transformOrigin: 'top center',
-                transition: springTransition
-              }}
-              onPointerDown={handlePointerDown}
-              onPointerMove={handlePointerMove}
-              onPointerUp={handlePointerUp}
-              onPointerCancel={handlePointerUp}
-            >
-              <div className="w-10 h-16 bg-gradient-to-b from-zinc-600 to-zinc-900 border-x-2 border-zinc-500 rounded-b-lg z-20 shadow-[0_5px_15px_rgba(0,0,0,0.5)] flex flex-col justify-end items-center relative">
-                 <div className="absolute top-0 w-5 h-full bg-zinc-950/40" />
-                 <div className="w-14 h-4 bg-zinc-700 rounded-full border border-zinc-500 shadow-md -mb-2 z-30" />
-              </div>
-              
-              <div className="w-32 h-64 bg-gradient-to-b from-zinc-200 via-zinc-400 to-zinc-500 rounded-full border-[4px] border-zinc-400 shadow-[inset_-6px_-6px_20px_rgba(0,0,0,0.3),_0_24px_60px_rgba(0,0,0,0.8)] flex flex-col items-center p-2.5 z-10 overflow-hidden group-hover:border-zinc-300 group-hover:shadow-[0_24px_60px_rgba(217,70,239,0.2)] transition-all duration-300">
-                <div className="w-full h-1/2 bg-gradient-to-b from-zinc-400 to-zinc-600 rounded-t-full shadow-inner relative overflow-hidden border-b-[5px] border-zinc-700">
-                   <div className="absolute inset-0 opacity-60 bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,#18181b_4px,#18181b_8px)]" />
-                   <div className="absolute inset-0 opacity-60 bg-[repeating-linear-gradient(-45deg,transparent,transparent_4px,#18181b_4px,#18181b_8px)]" />
-                   <div className="absolute top-2 left-3 w-6 h-20 bg-white/20 blur-md rounded-full transform -rotate-12" />
-                </div>
-                
-                <div className="w-full h-1/2 flex flex-col items-center justify-center relative">
-                   <div className="absolute w-full h-[3px] bg-zinc-600 top-5 shadow-sm" />
-                   <div className="absolute w-full h-[3px] bg-zinc-600 top-10 shadow-sm" />
-                   
-                   <div className={`w-5 h-5 rounded-full mt-10 border border-zinc-800 transition-all duration-300 ${
-                     isDragging 
-                       ? 'bg-fuchsia-400 shadow-[0_0_25px_#d946ef] animate-pulse' 
-                       : 'bg-zinc-700 shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]'
-                   }`} />
-                </div>
-              </div>
-            </div>
-            
+          {/* THE KINETIC TYPOGRAPHY SPHERE (Hidden on Mobile) */}
+          <div className="hidden md:flex absolute inset-0 md:relative md:inset-auto w-full md:w-1/2 h-full z-20 items-center justify-center overflow-visible">
+            <KineticSphere />
           </div>
 
           {/* THE TEXT ARENA */}
@@ -288,7 +318,7 @@ export default function About() {
             <div 
               key={index} 
               data-index={index}
-              className="track-slide w-full h-screen snap-center" 
+              className="track-slide w-full h-screen snap-center snap-always" 
             />
           ))}
         </div>

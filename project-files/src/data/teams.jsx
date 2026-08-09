@@ -11,26 +11,29 @@ const slugify = (name) =>
 
 // Builds the local image path for a core/leadership member (NO extension —
 // MemberCard.jsx automatically tries .jpg, .jpeg, .png, then .webp)
-const corePhoto = (name, year = "2025-2026") =>
+const corePhoto = (name, year = "2026-2027") =>
   `/teams/${year}/core/${slugify(name)}`;
 
+// STATIC leadership — principal & faculty advisor stay the same across
+// every year, so this is defined ONCE and reused everywhere instead of
+// being duplicated inside each year block.
+export const leadership = {
+  principal: {
+    name: "Dr. Hari Vasudevan",
+    position: "Principal",
+    image: "/teams/leadership/dr-hari-vasudevan.png",
+  },
+
+  faculty: {
+    name: "Dr. Ranjeet Puyed",
+    position: "Faculty Advisor",
+    image: "/teams/leadership/dr-ranjeet-puyed.jpg",
+  },
+};
+
 export const teams = {
-  "2025-2026": {
-    groupPhoto: "/teams/2025-2026/groupicture.jpeg",
-
-    leadership: {
-      principal: {
-        name: "Dr. Hari Vasudevan",
-        position: "Principal",
-      image: "/teams/2025-2026/leadership/dr-hari-vasudevan.png",
-      },
-
-      faculty: {
-        name: "Dr. Ranjeet Puyed",
-        position: "Faculty Advisor",
-          image: "/teams/2025-2026/leadership/dr-ranjeet-puyed.jpg", 
-      },
-    },
+  "2026-2027": {
+    groupPhoto: "/teams/2026-2027/groupicture.jpeg",
 
     core: {
       "Chairperson": [
@@ -371,43 +374,5 @@ export const teams = {
     },
   },
 
-  "2026-2027": {
-    groupPhoto: placeholder,
-
-    leadership: {
-      principal: {
-        name: "Dr. Hari Vasudevan",
-        position: "Principal",
-        image: placeholder,
-      },
-
-      faculty: {
-        name: "Dr. Ranjeet Puyed",
-        position: "Faculty Advisor",
-        image: placeholder,
-      },
-    },
-    core: {},
-    community: {},
-  },
-
-  "2027-2028": {
-    groupPhoto: placeholder,
-
-    leadership: {
-      principal: {
-        name: "Dr. Hari Vasudevan",
-        position: "Principal",
-        image: placeholder,
-      },
-
-      faculty: {
-        name: "Dr. Ranjeet Puyed",
-        position: "Faculty Advisor",
-        image: placeholder,
-      },
-    },
-    core: {},
-    community: {},
-  },
+ 
 };
