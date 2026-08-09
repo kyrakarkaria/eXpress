@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 
 // Extensions to try, in order, when `image` is passed WITHOUT an extension
 // e.g. image="/teams/2025-2026/core/dhruv-thakur"
-const EXTENSIONS = ["jpg", "jpeg", "png", "webp", "heic"];
+const EXTENSIONS = ["jpeg", "jpg", "png", "webp", "heic"];
 
 const MemberCard = ({ name, position, image }) => {
-  const hasExtension = image ? /\.(jpg|jpeg|png|webp)$/i.test(image) : false;
+  const hasExtension = image ? /\.(jpeg|jpg|png|webp)$/i.test(image) : false;
 
   const [extIndex, setExtIndex] = useState(0);
   const [imgError, setImgError] = useState(false);
