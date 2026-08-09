@@ -21,6 +21,17 @@ const magazineArchive = [
     pagePrefix: 'eXpresso June_page'
   },
   {
+    id: 'jul-2026',
+    title: 'eXpresso July 2026',
+    month: 'Jul 2026',
+    folderName: 'jul',
+    description: 'Fresh insights and stories from our July 2026 collection.',
+    tag: 'Archived',
+    available: true,
+    pagesCount: 8,
+    pagePrefix: 'eXpresso July_page'
+  },
+  {
     id: 'may-2026',
     title: 'eXpresso May 2026',
     month: 'May 2026',
