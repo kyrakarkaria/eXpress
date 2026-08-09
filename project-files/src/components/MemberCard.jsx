@@ -9,7 +9,7 @@ const MemberCard = ({ name, position, image }) => {
 
   const [extIndex, setExtIndex] = useState(0);
   const [imgError, setImgError] = useState(false);
-
+  const cacheBuster = "?v=2"
   // Reset when the member (and thus image) changes
   useEffect(() => {
     setExtIndex(0);
@@ -18,10 +18,10 @@ const MemberCard = ({ name, position, image }) => {
 
   // If image already has an extension, use it as-is; otherwise build it
   const resolvedSrc = hasExtension
-    ? image
+    ? `${image}${cacheBuster}`
     : image
-    ? `${image}.${EXTENSIONS[extIndex]}`
-    : null;
+      ? `${image}.${EXTENSIONS[extIndex]}${cacheBuster}`
+      : null;
 
   const handleError = () => {
     if (!hasExtension && extIndex < EXTENSIONS.length - 1) {
