@@ -165,7 +165,7 @@ export default function Home() {
                   to Inspire
                 </p>
                 <a
-                  href="https://invictus.vercel.app"
+                  href="https://invictus10.vercel.app"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
