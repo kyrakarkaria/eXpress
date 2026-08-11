@@ -10,12 +10,12 @@ export default function Home() {
   useEffect(() => {
     const frameCount = 90;
 
-const isMobile = window.innerWidth < 600;
+    const isMobile = window.innerWidth < 600;
 
-const frameFolder = isMobile ? "mobile_frames" : "frames";
+    const frameFolder = isMobile ? "mobile_frames" : "frames";
 
-const currentFrame = (index) =>
-  `/${frameFolder}/frame_${String(index).padStart(4, "0")}.jpg`;
+    const currentFrame = (index) =>
+      `/${frameFolder}/frame_${String(index).padStart(4, "0")}.jpg`;
 
     const images = [];
     const canvas = canvasRef.current;
@@ -77,11 +77,11 @@ const currentFrame = (index) =>
       onUpdate: render,
     });
 
-const resizeCanvas = () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    render();
-};
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      render();
+    };
 
     window.addEventListener("resize", resizeCanvas);
 
@@ -102,30 +102,30 @@ const resizeCanvas = () => {
   }, []);
 
   useEffect(() => {
-   const tl = gsap.timeline({
-  scrollTrigger: {
-    trigger: document.body,
-    start: "top top",
-    end: "+=3600",
-    scrub: 0.3,
-  },
-});
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: document.body,
+        start: "top top",
+        end: "+=3600",
+        scrub: 0.3,
+      },
+    });
 
-tl.to({}, { duration: 1 })
+    tl.to({}, { duration: 1 })
 
-tl.to(".hero1", {
-  opacity: 0,
-  y: -50,
-  duration: 1,
-})
+    tl.to(".hero1", {
+      opacity: 0,
+      y: -50,
+      duration: 1,
+    })
 
-.to({}, { duration: 0.1 })
+      .to({}, { duration: 0.1 })
 
-.to(".hero3", {
-  opacity: 1,
-  y: 0,
-  duration: 1,
-});
+      .to(".hero3", {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+      });
 
     return () => {
       tl.scrollTrigger?.kill();
@@ -164,9 +164,15 @@ tl.to(".hero1", {
                 <p className="text-violet-400 text-3xl md:text-5xl font-black uppercase">
                   to Inspire
                 </p>
-                <button className="pointer-events-auto text-sm md:text-md inline-flex w-fit rounded-full bg-violet-600 px-8 py-4 font-bold text-white transition-transform duration-200 ease-in-out hover:-translate-y-0.5">
-                  Upcoming events →
-                </button>
+                <a
+                  href="https://invictus.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <button className="pointer-events-auto text-sm md:text-md inline-flex w-fit rounded-full bg-violet-600 px-8 py-4 font-bold text-white transition-transform duration-200 ease-in-out hover:-translate-y-0.5">
+                    Upcoming events →
+                  </button>
+                </a>
               </div>
             </div>
           </div>
