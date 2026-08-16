@@ -140,6 +140,28 @@ md:text-7xl
          <div className="flex flex-wrap justify-center gap-12">
          <FacultyCard {...leadership.principal} />
         </div>
+
+        <h2 className="font-serif mt-10 text-4xl font-bold text-center"> Vice Principal </h2>
+
+        <div
+          className="
+            w-72
+            h-1
+            bg-gradient-to-r
+            from-violet-500
+            via-purple-400
+            to-fuchsia-500
+            mx-auto
+            rounded-full
+            mt-4
+            mb-6
+          "
+        />
+
+        <div className="flex flex-wrap justify-center gap-12">
+         
+          <FacultyCard {...leadership.viceprincipal} />
+        </div>
         
         <h2 className="font-serif mt-10 text-4xl font-bold text-center">Faculty</h2>
 
