@@ -24,6 +24,12 @@ export const leadership = {
     image: "/teams/leadership/dr-hari-vasudevan.png",
   },
 
+  viceprincipal: {
+    name: "Dr. Narendra M. Shekokar",
+    position: "Vice Principal",
+    image: "/teams/leadership/dr-narendra-shekokar.jpg",
+  },
+
   faculty: {
     name: "Dr. Ranjeet Puyed",
     position: "Faculty Advisor",
