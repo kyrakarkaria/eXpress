@@ -114,7 +114,7 @@ export const teams = {
         },
         {
           id: 10,
-          name: " Mohit Karkaria",
+          name: " Mohit Kankaria",
           position: "Marketing Head",
           image: corePhoto("Mohit Karkaria"),
         },
